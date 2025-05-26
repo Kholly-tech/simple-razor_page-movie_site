@@ -1,0 +1,96 @@
+@page
+@model RazorPagesMovie.Pages.Actors.IndexModel
+
+@{
+    ViewData["Title"] = "Actors";
+}
+
+<h1>Actors</h1>
+
+<p>
+    <a asp-page="Create" class="btn btn-primary">Create New</a>
+</p>
+
+<form method="get">
+    <div class="form-group">
+        <div class="input-group">
+            <input type="text" class="form-control" asp-for="SearchString" placeholder="Search actors...">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="submit">Search</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Date of Birth</th>
+            <th>Movies</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var actor in Model.PaginatedActors)
+        {
+            <tr>
+                <td>@actor.Name</td>
+                <td>@actor.DateOfBirth.ToShortDateString()</td>
+                <td>
+                    @if (actor.MovieActors != null && actor.MovieActors.Any())
+                    {
+                        <ul>
+                            @foreach (var ma in actor.MovieActors)
+                            {
+                                <li>@ma.Movie.Title</li>
+                            }
+                        </ul>
+                    }
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@actor.Id" class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-page="./Details" asp-route-id="@actor.Id" class="btn btn-sm btn-info">Details</a>
+                    <a asp-page="./Delete" asp-route-id="@actor.Id" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<nav aria-label="Pagination">
+    <ul class="pagination justify-content-center">
+        @if (Model.PaginatedActors.HasPreviousPage)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-page="./Index" asp-route-pageIndex="@(Model.PageIndex - 1)" asp-route-searchString="@Model.SearchString">Previous</a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item disabled">
+                <span class="page-link">Previous</span>
+            </li>
+        }
+
+        @for (var i = 1; i <= Model.TotalPages; i++)
+        {
+            <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                <a class="page-link" asp-page="./Index" asp-route-pageIndex="@i" asp-route-searchString="@Model.SearchString">@i</a>
+            </li>
+        }
+
+        @if (Model.PaginatedActors.HasNextPage)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-page="./Index" asp-route-pageIndex="@(Model.PageIndex + 1)" asp-route-searchString="@Model.SearchString">Next</a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item disabled">
+                <span class="page-link">Next</span>
+            </li>
+        }
+    </ul>
+</nav>

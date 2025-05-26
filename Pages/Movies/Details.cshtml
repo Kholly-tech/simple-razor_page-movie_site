@@ -1,0 +1,71 @@
+@page
+@model RazorPagesMovie.Pages.Movies.DetailsModel
+
+@{
+    ViewData["Title"] = "Movie Details";
+}
+
+<h1>Movie Details</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Movie.Title)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Movie.Title)</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Movie.Director)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Movie.Director)</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Movie.ReleaseDate)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Movie.ReleaseDate)</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Movie.Genre)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Movie.Genre)</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Movie.IMDbRating)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Movie.IMDbRating)</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Movie.BoxOfficeRevenue)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Movie.BoxOfficeRevenue)</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Movie.ReleaseCountry)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Movie.ReleaseCountry)</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Movie.Price)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Movie.Price)</dd>
+        
+        <dt class="col-sm-3">Cast</dt>
+        <dd class="col-sm-9">
+            @if (Model.Movie.Cast != null && Model.Movie.Cast.Any())
+            {
+                <ul>
+                    @foreach (var castMember in Model.Movie.Cast)
+                    {
+                        <li>@castMember.Name (@castMember.Role)</li>
+                    }
+                </ul>
+            }
+        </dd>
+        
+        <dt class="col-sm-3">Actors</dt>
+        <dd class="col-sm-9">
+            @if (Model.Movie.MovieActors != null && Model.Movie.MovieActors.Any())
+            {
+                <ul>
+                    @foreach (var ma in Model.Movie.MovieActors)
+                    {
+                        <li><a asp-page="/Actors/Details" asp-route-id="@ma.ActorId">@ma.Actor.Name</a></li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <span>No actors</span>
+            }
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Movie.Id" class="btn btn-warning">Edit</a>
+    <a asp-page="./Index" class="btn btn-secondary">Back to List</a>
+</div>

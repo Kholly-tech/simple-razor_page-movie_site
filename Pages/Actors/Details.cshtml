@@ -1,0 +1,40 @@
+@page
+@model RazorPagesMovie.Pages.Actors.DetailsModel
+
+@{
+    ViewData["Title"] = "Actor Details";
+}
+
+<h1>Actor Details</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">Name</dt>
+        <dd class="col-sm-9">@Model.Actor.Name</dd>
+
+        <dt class="col-sm-3">Date of Birth</dt>
+        <dd class="col-sm-9">@Model.Actor.DateOfBirth.ToShortDateString()</dd>
+
+        <dt class="col-sm-3">Movies</dt>
+        <dd class="col-sm-9">
+            @if (Model.Actor.MovieActors != null && Model.Actor.MovieActors.Any())
+            {
+                <ul>
+                    @foreach (var ma in Model.Actor.MovieActors)
+                    {
+                        <li><a asp-page="/Movies/Details" asp-route-id="@ma.MovieId">@ma.Movie.Title</a></li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <span>No movies</span>
+            }
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Actor.Id" class="btn btn-warning">Edit</a>
+    <a asp-page="./Index" class="btn btn-secondary">Back to List</a>
+</div>
